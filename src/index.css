@@ -24,10 +24,14 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 100%;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 h1 {
@@ -65,4 +69,139 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+/* Global styles for layout */
+.nav-link {
+  margin-left: 40px;
+}
+
+/* Bootstrap container overrides for full width */
+.container {
+  width: 100%;
+  max-width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1400px;
+  }
+}
+
+.row {
+  margin: 0;
+  width: 100%;
+}
+
+/* Component specific styles */
+.hero-section {
+  width: 100%;
+  padding: 50px 0;
+}
+
+.awards-section, 
+.stats-section,
+.pricing-section,
+.education-section {
+  width: 100%;
+  padding: 40px 0;
+}
+
+/* Reset some Bootstrap defaults */
+.col-6 {
+  padding: 2rem;
+}
+
+/* Fix image scaling */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Footer styles */
+#footer {
+  padding: 40px 0;
+  font-size: 13px;
+}
+
+#footer a {
+  color: #666;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  line-height: 1.8;
+  display: inline-block;
+}
+
+#footer a:hover {
+  color: #387ed1;
+}
+
+.footer-logo img {
+  max-width: 130px;
+  margin-bottom: 20px;
+}
+
+.copyright {
+  color: #666;
+  margin: 5px 0;
+  font-size: 13px;
+}
+
+.social-icons {
+  display: flex;
+  gap: 15px;
+  margin: 15px 0;
+}
+
+.social-icons a {
+  color: #666;
+  font-size: 18px;
+}
+
+.nav-head {
+  color: #444;
+  font-weight: 600;
+  margin-bottom: 15px;
+  list-style: none;
+}
+
+.list-style {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.list-style li {
+  margin-bottom: 8px;
+}
+
+.smallprint {
+  color: #666;
+  font-size: 12px;
+  line-height: 1.8;
+  margin-top: 30px;
+}
+
+.footer-graveyard-links {
+  margin-top: 30px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.footer-graveyard-links ul {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-wrap: wrap;
+}
+
+.main-footer {
+  margin-bottom: 30px;
 }
