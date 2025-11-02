@@ -49,7 +49,7 @@ const Login = () => {
         handleSuccess(message);
         console.log("LOGIN SUCCESSFUL! Preparing to navigate...");
         setTimeout(() => {
-          navigate("/"); // Redirect to dashboard on success
+            window.location.href = "/";  // Redirect to dashboard on success
         }, 1000);
       } else {
         handleError(message);

@@ -4,6 +4,12 @@ import { Doughnut } from "react-chartjs-2";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
+const chartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+};
+
+
 export function DoughnutChart({ data }) {
   return <Doughnut data={data} />;
 }

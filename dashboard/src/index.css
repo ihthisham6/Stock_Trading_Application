@@ -944,8 +944,12 @@ hr {
 .auth-image-section {
   flex-basis: 45%;
   background-image: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?q=80&w=2070&auto=format&fit=crop');
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
   background-position: center;
+  background-color: #000; /* fallback to black if empty space appears */
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
 }
 
 /* --- The Form Section (Right Side) --- */
