@@ -112,10 +112,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios"; // 'all' is not needed here
 import { VerticalGraph } from "./VerticalGraph";
+import { useGeneralContext } from "./GeneralContext";
 
 const Holdings = () => {
   // --- STATE MANAGEMENT ---
   // Use more descriptive names for state
+    const { refreshKey } = useGeneralContext();
   const [holdingsData, setHoldingsData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -141,7 +143,7 @@ const Holdings = () => {
     };
 
     fetchHoldings();
-  }, []); // The empty dependency array means this runs only once on mount
+  }, [refreshKey]); // The empty dependency array means this runs only once on mount
 
   // --- LOADING AND ERROR UI ---
   // Show a loading message while the API call is in progress

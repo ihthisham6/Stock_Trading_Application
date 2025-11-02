@@ -59,9 +59,10 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import { useGeneralContext } from "./GeneralContext";
 const Positions = () => {
   // --- STATE MANAGEMENT ---
+  const { refreshKey } = useGeneralContext();
   const [positionsData, setPositionsData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -85,7 +86,7 @@ const Positions = () => {
     };
 
     fetchPositions();
-  }, []);
+  }, [refreshKey]);
 
   // --- LOADING AND ERROR UI ---
   if (isLoading) {

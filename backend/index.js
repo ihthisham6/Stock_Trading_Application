@@ -1,236 +1,3 @@
-// require('dotenv').config();
-
-// const express = require('express');
-// const mongoose = require('mongoose');
-
-// const bodyParser = require('body-parser');
-// const cors = require('cors');
-// const cookieParser = require("cookie-parser");
-// const authRoute = require("./routes/AuthRoute");
-// const { HoldingsModel } = require("./model/HoldingsModel");
-// const { OrdersModel } = require("./model/OrdersModel");
-// const { PositionsModel } = require("./model/PositionsModel");
-// const PORT = process.env.PORT || 3002;
-
-// const mongoURL = process.env.MONGO_URL;
-// const app = express();
-
-
-//   app.use(
-//   cors({
-//     origin: ["http://localhost:3000", "http://localhost:5173"], 
-//     methods: ["GET", "POST", "PUT", "DELETE"],
-//     credentials: true, // The most important part
-// }));
-
-// app.use("/", authRoute);
-// app.use(bodyParser.json());
-
-// app.use(cookieParser());
-
-// // app.get('/addHoldings', async (req, res) => {
-// //   let tempHoldings= [
-// //   {
-// //     name: "BHARTIARTL",
-// //     qty: 2,
-// //     avg: 538.05,
-// //     price: 541.15,
-// //     net: "+0.58%",
-// //     day: "+2.99%",
-// //   },
-// //   {
-// //     name: "HDFCBANK",
-// //     qty: 2,
-// //     avg: 1383.4,
-// //     price: 1522.35,
-// //     net: "+10.04%",
-// //     day: "+0.11%",
-// //   },
-// //   {
-// //     name: "HINDUNILVR",
-// //     qty: 1,
-// //     avg: 2335.85,
-// //     price: 2417.4,
-// //     net: "+3.49%",
-// //     day: "+0.21%",
-// //   },
-// //   {
-// //     name: "INFY",
-// //     qty: 1,
-// //     avg: 1350.5,
-// //     price: 1555.45,
-// //     net: "+15.18%",
-// //     day: "-1.60%",
-// //     isLoss: true,
-// //   },
-// //   {
-// //     name: "ITC",
-// //     qty: 5,
-// //     avg: 202.0,
-// //     price: 207.9,
-// //     net: "+2.92%",
-// //     day: "+0.80%",
-// //   },
-// //   {
-// //     name: "KPITTECH",
-// //     qty: 5,
-// //     avg: 250.3,
-// //     price: 266.45,
-// //     net: "+6.45%",
-// //     day: "+3.54%",
-// //   },
-// //   {
-// //     name: "M&M",
-// //     qty: 2,
-// //     avg: 809.9,
-// //     price: 779.8,
-// //     net: "-3.72%",
-// //     day: "-0.01%",
-// //     isLoss: true,
-// //   },
-// //   {
-// //     name: "RELIANCE",
-// //     qty: 1,
-// //     avg: 2193.7,
-// //     price: 2112.4,
-// //     net: "-3.71%",
-// //     day: "+1.44%",
-// //   },
-// //   {
-// //     name: "SBIN",
-// //     qty: 4,
-// //     avg: 324.35,
-// //     price: 430.2,
-// //     net: "+32.63%",
-// //     day: "-0.34%",
-// //     isLoss: true,
-// //   },
-// //   {
-// //     name: "SGBMAY29",
-// //     qty: 2,
-// //     avg: 4727.0,
-// //     price: 4719.0,
-// //     net: "-0.17%",
-// //     day: "+0.15%",
-// //   },
-// //   {
-// //     name: "TATAPOWER",
-// //     qty: 5,
-// //     avg: 104.2,
-// //     price: 124.15,
-// //     net: "+19.15%",
-// //     day: "-0.24%",
-// //     isLoss: true,
-// //   },
-// //   {
-// //     name: "TCS",
-// //     qty: 1,
-// //     avg: 3041.7,
-// //     price: 3194.8,
-// //     net: "+5.03%",
-// //     day: "-0.25%",
-// //     isLoss: true,
-// //   },
-// //   {
-// //     name: "WIPRO",
-// //     qty: 4,
-// //     avg: 489.3,
-// //     price: 577.75,
-// //     net: "+18.08%",
-// //     day: "+0.32%",
-// //   },
-// // ];
-
-// // tempHoldings.forEach((item) => {
-// //     let newHolding = new HoldingsModel({
-// //       name: item.name,
-// //       qty: item.qty,
-// //       avg: item.avg,
-// //       price: item.price,
-// //       net: item.day,
-// //       day: item.day,
-// //     });
-
-// //     newHolding.save();
-// //   });
-// //   res.send("Done!");
-// // });
-
-
-// // app.get("/addPositions", async (req, res) => {
-// //   let tempPositions = [
-// //     {
-// //       product: "CNC",
-// //       name: "EVEREADY",
-// //       qty: 2,
-// //       avg: 316.27,
-// //       price: 312.35,
-// //       net: "+0.58%",
-// //       day: "-1.24%",
-// //       isLoss: true,
-// //     },
-// //     {
-// //       product: "CNC",
-// //       name: "JUBLFOOD",
-// //       qty: 1,
-// //       avg: 3124.75,
-// //       price: 3082.65,
-// //       net: "+10.04%",
-// //       day: "-1.35%",
-// //       isLoss: true,
-// //     },
-// //   ];
-
-// //   tempPositions.forEach((item) => {
-// //     let newPosition = new PositionsModel({
-// //       product: item.product,
-// //       name: item.name,
-// //       qty: item.qty,
-// //       avg: item.avg,
-// //       price: item.price,
-// //       net: item.net,
-// //       day: item.day,
-// //       isLoss: item.isLoss,
-// //     });
-
-// //     newPosition.save();
-// //   });
-// //   res.send("Done!");
-// // });
-
-
-// app.get('/allHoldings', async (req, res) => {
-//   let allHoldings = await HoldingsModel.find({});
-//   res.json(allHoldings);
-// });
-
-// app.get('/allPositions', async (req, res) => {
-//   let allPositions = await PositionsModel.find({});
-//   res.json(allPositions);
-// });
-
-
-// app.post('/newOrder', async (req, res) => {
-
-//     let newOrder = new OrdersModel({
-//         name: req.body.name,
-//     qty: req.body.qty,
-//     price: req.body.price,
-//     mode: req.body.mode,
-//     });
-
-//     newOrder.save();
-//     res.send("Order saved!");
-// });
-
-// app.listen(PORT, () => {
-// console.log('App started!');
-// mongoose.connect(mongoURL);
-// console.log('DB Connected');
-// });
-
-
-
 require('dotenv').config();
 
 const express = require('express');
@@ -279,145 +46,286 @@ app.get('/allPositions',userVerification, async (req, res) => {
   res.json(allPositions);
 });
 
-app.post('/newOrder', userVerification, async (req, res) => {
-    let newOrder = new OrdersModel({
-        name: req.body.name,
-        qty: req.body.qty,
-        price: req.body.price,
-        mode: req.body.mode,
-          userId: req.userId,
+// app.post('/newOrder', userVerification, async (req, res) => {
+//     let newOrder = new OrdersModel({
+//         name: req.body.name,
+//         qty: req.body.qty,
+//         price: req.body.price,
+//         mode: req.body.mode,
+//           userId: req.userId,
 
-    });
-    await newOrder.save(); // It's good practice to await this
-    res.send("Order saved!");
-});
+//     });
+//     await newOrder.save(); // It's good practice to await this
+//     res.send("Order saved!");
+// });
 
 
 
-// ====================================================================
-// ==================== TEMPORARY MIGRATION ROUTE =====================
-//              DELETE OR COMMENT OUT THIS ENTIRE BLOCK AFTER USE
-// ====================================================================
-// app.get('/migrateData', async (req, res) => {
-//     try {
-//         // !!! CRITICAL: PASTE THE USER ID YOU COPIED FROM ATLAS HERE !!!
-//         const testUserId = '690624a48fffb318d2ab655b'; 
+// ================================================================
+// ==================== UPGRADED NEW ORDER (BUY) ROUTE ====================
+// ================================================================
+// app.post('/newOrder', userVerification, async (req, res) => {
+//     const { name, qty, price, mode } = req.body;
+//     const userId = req.userId;
 
-//         // Safety check to ensure the ID is valid before proceeding
-//         if (!mongoose.Types.ObjectId.isValid(testUserId)) {
-//             return res.status(400).json({ message: "Invalid User ID format. Please check the ID you pasted." });
+//     // --- Part 1: Save the Order as a Transaction Record ---
+//     const newOrder = new OrdersModel({ name, qty, price, mode, userId });
+//     await newOrder.save();
+
+//     // --- Part 2: Update Holdings Portfolio if it's a BUY order ---
+//     if (mode === 'BUY') {
+//         try {
+//             const existingHolding = await HoldingsModel.findOne({ name: name, userId: userId });
+
+//             if (existingHolding) {
+//                 // --- LOGIC FOR EXISTING HOLDING ---
+//                 // If the user already owns this stock, we update the average cost.
+//                 const oldQty = existingHolding.qty;
+//                 const oldAvg = existingHolding.avg;
+
+//                 // The formula for the new weighted average price
+//                 const newTotalQty = oldQty + qty;
+//                 const newAvgPrice = ((oldQty * oldAvg) + (qty * price)) / newTotalQty;
+
+//                 // Update the holding with the new values
+//                 existingHolding.qty = newTotalQty;
+//                 existingHolding.avg = newAvgPrice;
+//                 existingHolding.price = price; // Update LTP to the latest buy price
+
+//                 await existingHolding.save();
+//             } else {
+//                 // --- LOGIC FOR NEW HOLDING ---
+//                 // If this is a new stock for the user, create a brand new holding document.
+//                 const newHolding = new HoldingsModel({
+//                     name: name,
+//                     qty: qty,
+//                     avg: price, // For the first purchase, the average cost IS the buy price
+//                     price: price,
+//                     net: "0.00%", // Initialize net/day changes
+//                     day: "0.00%",
+//                     userId: userId,
+//                 });
+//                 await newHolding.save();
+//             }
+//         } catch (error) {
+//             console.error("Failed to update holdings after buy order:", error);
+//             // This part is for logging. The user's order was still saved successfully.
 //         }
-
-//         console.log(`Starting migration for userId: ${testUserId}`);
-
-//         // --- Update Holdings ---
-//         // Find all holdings that DO NOT have a userId field and set it.
-//         const holdingsResult = await HoldingsModel.updateMany(
-//             { userId: { $exists: false } },
-//             { $set: { userId: testUserId } }
-//         );
-
-//         // --- Update Positions ---
-//         const positionsResult = await PositionsModel.updateMany(
-//             { userId: { $exists: false } },
-//             { $set: { userId: testUserId } }
-//         );
-
-//         // --- Update Orders ---
-//         const ordersResult = await OrdersModel.updateMany(
-//             { userId: { $exists: false } },
-//             { $set: { userId: testUserId } }
-//         );
-        
-//         console.log('Migration complete.');
-
-//         // Send a confirmation response to the browser
-//         res.status(200).json({
-//             message: "Data migration successful!",
-//             holdingsUpdated: holdingsResult.modifiedCount,
-//             positionsUpdated: positionsResult.modifiedCount,
-//             ordersUpdated: ordersResult.modifiedCount
-//         });
-
-//     } catch (error) {
-//         console.error("Migration failed:", error);
-//         res.status(500).json({ message: "An error occurred during migration.", error: error.message });
 //     }
+
+//     res.status(201).send("Order placed and portfolio updated successfully!");
 // });
-// ====================================================================
-// ================== END OF TEMPORARY MIGRATION ROUTE ================
-// ====================================================================
+// REPLACE your /newOrder route with this DEBUG version.
 
-// ====================================================================
-// =========== TEMPORARY ROUTE TO FIX MISSING HOLDINGS userId =========
-// ====================================================================
-// app.get('/fixHoldings', userVerification, async (req, res) => {
-//     // This route is protected by userVerification.
-//     // It will only run if you are logged in, and it gives us the correct req.userId.
+// app.post('/newOrder', userVerification, async (req, res) => {
+//     // --- DEBUG STEP 1: Log the incoming data ---
+//     console.log("--- New Order Request Received ---");
+//     console.log("Request Body:", req.body);
 
-//     try {
-//         console.log(`Starting to fix holdings for userId: ${req.userId}`);
+//     const { name, qty, price, mode } = req.body;
+//     const userId = req.userId;
 
-//         // Find all holdings that DO NOT have a userId field and update them.
-//         const holdingsFixResult = await HoldingsModel.updateMany(
-//             { userId: { $exists: false } },
-//             { $set: { userId: req.userId } }
-//         );
+//     // Save the transaction record.
+//     const newOrder = new OrdersModel({ name, qty, price, mode, userId });
+//     await newOrder.save();
+//     console.log("Order document saved successfully.");
 
-//         console.log('Holdings fix complete.');
+//     if (mode === 'BUY') {
+//         try {
+//             // --- DEBUG STEP 2: Log what we are searching for ---
+//             console.log(`Searching for existing holding with name: ${name} and userId: ${userId}`);
+//             const existingHolding = await HoldingsModel.findOne({ name: name, userId: userId });
 
-//         // Send a confirmation response.
-//         res.status(200).json({
-//             message: "Holdings userId fix successful!",
-//             holdingsUpdated: holdingsFixResult.modifiedCount
-//         });
+//             // --- DEBUG STEP 3: Log the result of the search ---
+//             console.log("Result of findOne:", existingHolding);
 
-//     } catch (error) {
-//         console.error("Holdings fix failed:", error);
-//         res.status(500).json({ message: "An error occurred during the fix." });
+//             if (existingHolding) {
+//                 console.log("--- FOUND existing holding. Entering UPDATE logic. ---");
+//                 // Update logic here...
+//                 const oldQty = existingHolding.qty;
+//                 const oldAvg = existingHolding.avg;
+//                 const newTotalQty = oldQty + qty;
+//                 const newAvgPrice = ((oldQty * oldAvg) + (qty * price)) / newTotalQty;
+//                 existingHolding.qty = newTotalQty;
+//                 existingHolding.avg = newAvgPrice;
+//                 existingHolding.price = price;
+//                 await existingHolding.save();
+//                 console.log("--- Holding UPDATED successfully. ---");
+
+//             } else {
+//                 console.log("--- DID NOT find existing holding. Entering CREATE logic. ---");
+//                 // Create logic here...
+//                 const newHolding = new HoldingsModel({
+//                     name: name,
+//                     qty: qty,
+//                     avg: price,
+//                     price: price,
+//                     userId: userId,
+//                 });
+//                 await newHolding.save();
+//                 console.log("--- New holding CREATED successfully. ---");
+//             }
+//         } catch (error) {
+//             console.error("!!! CRITICAL ERROR in holdings update !!!:", error);
+//         }
 //     }
+
+//     res.status(201).json({ message: "Order placed and portfolio updated successfully!" });
 // });
-// ====================================================================
-// =================== END OF TEMPORARY FIX ROUTE =====================
-// ====================================================================
 
-// ====================================================================
-// ============ TEMPORARY ROUTE - BRUTE FORCE HOLDINGS FIX ============
-// ====================================================================
-// app.get('/bruteForceFixHoldings', userVerification, async (req, res) => {
-//     try {
-//         const userIdToSet = req.userId;
-//         console.log(`Starting BRUTE FORCE fix for userId: ${userIdToSet}`);
+// ==========================================================
+// ================= FINAL, ROBUST /newOrder ROUTE =================
+// ==========================================================
+// app.post('/newOrder', userVerification, async (req, res) => {
+//     const { name, qty, price, mode } = req.body;
+//     const userId = req.userId;
 
-//         // Directly access the collection named 'holdings'
-//         const holdingsCollection = mongoose.connection.collection('holdings');
+//     // Save the transaction record first. This part works perfectly.
+//     const newOrder = new OrdersModel({ name, qty, price, mode, userId });
+//     await newOrder.save();
 
-//         // Build the update operation
-//         const filter = { userId: { $exists: false } };
-//         const updateDoc = {
-//             $set: {
-//                 userId: new mongoose.Types.ObjectId(userIdToSet) // Ensure it's a proper ObjectId
-//             },
-//         };
+//     if (mode === 'BUY') {
+//         try {
+//             // Find the existing holding using a more direct query method.
+//             // This is less prone to subtle schema/type issues.
+//             const existingHolding = await HoldingsModel.findOne({ 
+//                 name: name, 
+//                 userId: new mongoose.Types.ObjectId(userId) // Explicitly cast userId to an ObjectId
+//             });
 
-//         // Execute the update
-//         const result = await holdingsCollection.updateMany(filter, updateDoc);
+//             if (existingHolding) {
+//                 // --- UPDATE LOGIC ---
+//                 const oldQty = existingHolding.qty;
+//                 const oldAvg = existingHolding.avg;
+//                 const newTotalQty = oldQty + qty;
+//                 const newAvgPrice = ((oldQty * oldAvg) + (qty * price)) / newTotalQty;
 
-//         console.log('Brute force fix complete. Documents modified:', result.modifiedCount);
+//                 // Update the document found.
+//                 existingHolding.qty = newTotalQty;
+//                 existingHolding.avg = newAvgPrice;
+//                 existingHolding.price = price;
+                
+//                 await existingHolding.save();
+//                 console.log(`--- Holding for ${name} UPDATED successfully. ---`);
 
-//         res.status(200).json({
-//             message: "Brute force holdings fix attempted!",
-//             holdingsUpdated: result.modifiedCount // Use the correct property from the result
-//         });
-
-//     } catch (error) {
-//         console.error("Brute force fix failed:", error);
-//         res.status(500).json({ message: "An error occurred during the brute force fix." });
+//             } else {
+//                 // --- CREATE LOGIC ---
+//                 const newHolding = new HoldingsModel({
+//                     name: name,
+//                     qty: qty,
+//                     avg: price,
+//                     price: price,
+//                     userId: userId
+//                 });
+//                 await newHolding.save();
+//                 console.log(`--- New holding for ${name} CREATED successfully. ---`);
+//             }
+//         } catch (error) {
+//             console.error("!!! CRITICAL ERROR in holdings update/create !!!:", error);
+//         }
 //     }
+
+//     res.status(201).json({ message: "Order placed and portfolio updated successfully!" });
 // });
-// ====================================================================
-// =================== END OF BRUTE FORCE FIX ROUTE ===================
-// ====================================================================
+
+// ==========================================================
+// ================= FINAL, ROBUST /newOrder ROUTE =================
+// ==========================================================
+app.post('/newOrder', userVerification, async (req, res) => {
+    const { name, qty, price, mode } = req.body;
+    const userId = req.userId;
+
+    const newOrder = new OrdersModel({ name, qty, price, mode, userId });
+    await newOrder.save();
+
+    if (mode === 'BUY') {
+        try {
+            // This query is more robust and guaranteed to find the holding if it exists.
+            const existingHolding = await HoldingsModel.findOne({ 
+                name: name, 
+                userId: new mongoose.Types.ObjectId(userId)
+            });
+
+            if (existingHolding) {
+                // --- UPDATE LOGIC ---
+                const oldQty = existingHolding.qty;
+                const oldAvg = existingHolding.avg;
+                const newTotalQty = oldQty + qty;
+                const newAvgPrice = ((oldQty * oldAvg) + (qty * price)) / newTotalQty;
+
+                existingHolding.qty = newTotalQty;
+                existingHolding.avg = newAvgPrice;
+                existingHolding.price = price;
+                await existingHolding.save();
+
+            } else {
+                // --- CREATE LOGIC ---
+                const newHolding = new HoldingsModel({
+                    name: name, qty: qty, avg: price, price: price, userId: userId
+                });
+                await newHolding.save();
+            }
+        } catch (error) {
+            console.error("!!! CRITICAL ERROR in holdings update/create !!!:", error);
+        }
+    }
+    res.status(201).json({ message: "Order placed and portfolio updated successfully!" });
+});
+// ==========================================================
+// ==================== NEW SELL ORDER ROUTE ====================
+// ==========================================================
+app.post('/sellOrder', userVerification, async (req, res) => {
+    // We expect the stock's name and the quantity to sell from the frontend
+    const { name, qty } = req.body;
+    const userId = req.userId;
+
+    // --- Basic Validation ---
+    if (!name || !qty || qty <= 0) {
+        return res.status(400).json({ message: "Invalid order details provided." });
+    }
+
+    try {
+        // --- Step A: Find the user's current holding of this specific stock ---
+        const holding = await HoldingsModel.findOne({ name: name, userId: userId });
+
+        // --- Step B: Perform Critical Validation Checks ---
+        if (!holding) {
+            return res.status(404).json({ message: "Sell failed. You do not own this stock." });
+        }
+        if (qty > holding.qty) {
+            return res.status(400).json({ message: `Sell failed. Insufficient quantity. You only own ${holding.qty} shares.` });
+        }
+
+        // --- Step C: Update or Delete the Holding ---
+        // Subtract the sold quantity from the user's holding
+        holding.qty -= qty;
+
+        if (holding.qty === 0) {
+            // If the user has sold all their shares, remove the holding entirely
+            await HoldingsModel.deleteOne({ _id: holding._id });
+        } else {
+            // Otherwise, just save the new, lower quantity
+            await holding.save();
+        }
+
+        // --- Step D: Create a Transaction Record in the Orders Collection ---
+        // We use the holding's average price for this record, as LTP might fluctuate
+        const newOrder = new OrdersModel({
+            name: name,
+            qty: qty,
+            price: holding.avg, // Use the average price for the order record
+            mode: "SELL",
+            userId: userId,
+        });
+        await newOrder.save();
+
+        res.status(201).json({ message: `Successfully sold ${qty} shares of ${name}.` });
+
+    } catch (error) {
+        console.error("Sell order processing failed:", error);
+        res.status(500).json({ message: "An error occurred on the server during the sell transaction." });
+    }
+});
 
 // --- 3. DATABASE CONNECTION & SERVER START ---
 // This is a safer way to start your server

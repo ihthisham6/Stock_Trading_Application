@@ -9,10 +9,11 @@ import Home from './components/Home'; // Your main app component
 import Login from './pages/Login';     // The login page you will create
 import Signup from './pages/Signup';   // The signup page you will create
 import ProtectedRoute from './components/ProtectedRoute'; // The gatekeeper component
-
+import { GeneralContextProvider } from './components/GeneralContext';
 function App() {
   return (
     <CookiesProvider> {/* Wrap everything in the provider */}
+      <GeneralContextProvider>
       <Routes>
         {/* === PUBLIC ROUTES === */}
         {/* These routes are visible to everyone, logged in or not */}
@@ -26,6 +27,7 @@ function App() {
           <Route path="/*" element={<Home />} />
         </Route>
       </Routes>
+      </GeneralContextProvider>
     </CookiesProvider>
   );
 }
