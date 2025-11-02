@@ -299,7 +299,7 @@ hr {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  margin-left: 20px;
+  margin-left: 0px;
 }
 
 .profile .avatar {
@@ -854,7 +854,7 @@ hr {
   position: relative; /* This is the anchor for the dropdown menu */
   display: flex;
   align-items: center;
-  margin-left: 20px; /* Matches the margin of your original .profile class */
+  margin-left: 10px; /* Matches the margin of your original .profile class */
 }
 
 /* This container holds the "Login" link when the user is logged out. */
@@ -1042,4 +1042,148 @@ hr {
 /* Remove the ToastContainer from the form flow */
 .Toastify__toast-container {
   position: fixed;
+}
+/* =================================================== */
+/* === STYLES FOR DYNAMIC STOCK SEARCH COMPONENT === */
+/* =================================================== */
+
+/* --- Main Search Input --- */
+/* This ensures the text you type is visible and the input looks clean. */
+.search {
+  width: 100%;
+  border: none;
+  padding: 15px 20px;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #333; /* Dark color for visible text */
+  border-bottom: 0.8px solid rgb(235, 234, 234);
+  background-color: #fff;
+  box-sizing: border-box; /* Ensures padding doesn't break layout */
+}
+
+.search:focus {
+  outline: 1px solid #4184f3; /* Your primary blue for focus */
+}
+
+
+/* --- The Container for the Search Bar and Dropdown --- */
+/* The parent container needs a relative position to correctly anchor the absolute-positioned dropdown. */
+.search-container {
+  position: relative;
+  width: 100%; /* Make it take the full width of its parent in the watchlist */
+}
+
+
+/* --- The Search Results Dropdown List --- */
+/* This is the <ul> that appears when you get results. */
+.search-results {
+  position: absolute;
+  top: 100%; /* Position it right below the search bar */
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  z-index: 1000; /* High z-index to ensure it appears above all other content */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-height: 300px; /* Prevent the list from being too long */
+  overflow-y: auto;  /* Add a scrollbar if the list is too long */
+}
+
+
+/* --- Individual Search Result Items --- */
+/* This is each <li> inside the dropdown. */
+.search-results li {
+  padding: 10px 15px;
+  cursor: pointer;
+  border-bottom: 1px solid #f1f1f1;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.search-results li:last-child {
+  border-bottom: none;
+}
+
+.search-results li:hover {
+  background-color: #f7f8fa; /* A light grey for hover effect */
+}
+
+.search-results li strong {
+  color: #333; /* Make the stock symbol bold and dark */
+  font-weight: 500;
+}
+
+
+/* --- "Searching..." Loading Indicator --- */
+/* This is the optional loading message that appears while the API call is in progress. */
+.search-loading {
+  padding: 10px 15px;
+  font-size: 0.9rem;
+  color: #999;
+  font-style: italic;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-top: none;
+}
+
+
+/* ========================================= */
+/* === STYLES FOR PROFIT AND LOSS STATES === */
+/* ========================================= */
+
+/* Remove default green color for P&L column */
+.row .col:last-child h5 {
+  color: inherit;
+}
+
+/* Profit styles */
+.order-table td.profit,
+.col h5.profit,
+.first h3.profit,
+.data .first h3.profit {
+  color: rgb(72, 194, 55) !important;
+}
+
+.col h5.profit small,
+.first h3.profit small,
+.data .first h3.profit small {
+  color: inherit;
+}
+
+/* Loss styles */
+.order-table td.loss,
+.col h5.loss,
+.first h3.loss,
+.data .first h3.loss {
+  color: rgb(250, 118, 78) !important;
+}
+
+.col h5.loss small,
+.first h3.loss small,
+.data .first h3.loss small {
+  color: inherit;
+}
+
+/* ========================================= */
+/* === STYLES FOR WATCHLIST DOUGHNUT CHART === */
+/* ========================================= */
+
+.watchlist-chart-container {
+  width: 100%; /* Make it slightly smaller than the container */
+  max-width: 350px;
+  margin: 20px auto; /* Center the chart horizontally */
+  padding-top: 20px;
+  border-top: 1px solid #f1f1f1; /* Add a separator line */
+}
+
+
+.vertical-graph-container {
+  width: 100%;
+  max-width: 800px; /* DECREASED from 700px. Adjust for desired size. */
+  margin: 3rem auto 0;
 }

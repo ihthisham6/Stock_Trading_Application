@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const axios = require('axios');
 const cookieParser = require("cookie-parser");
 // At the top of backend/index.js
 const { userVerification } = require('./middleware/AuthMiddleware');
@@ -11,9 +12,12 @@ const { userVerification } = require('./middleware/AuthMiddleware');
 const authRoute = require("./routes/AuthRoute.js");
 
 // --- Import Models (This is fine) ---
-const { HoldingsModel } = require("./models/HoldingsModel.js");
+//const { HoldingsModel } = require("./models/HoldingsModel.js");
+const WatchlistModel = require('./models/WatchlistModel');
+const HoldingsModel = require("./models/HoldingsModel.js");
 const { OrdersModel } = require("./models/OrdersModel.js");
 const { PositionsModel } = require("./models/PositionsModel.js");
+const UserModel = require('./models/UserModel');
 
 // --- Environment Variables ---
 const PORT = process.env.PORT || 3002;
@@ -46,191 +50,186 @@ app.get('/allPositions',userVerification, async (req, res) => {
   res.json(allPositions);
 });
 
-// app.post('/newOrder', userVerification, async (req, res) => {
-//     let newOrder = new OrdersModel({
-//         name: req.body.name,
-//         qty: req.body.qty,
-//         price: req.body.price,
-//         mode: req.body.mode,
-//           userId: req.userId,
+// ==========================================================
+// ============== NEW ROUTE FOR FETCHING ORDERS ===============
+// ==========================================================
+app.get('/allOrders', userVerification, async (req, res) => {
+    try {
+        // Find all orders that belong to the logged-in user
+        const allOrders = await OrdersModel.find({ userId: req.userId })
+            // Sort by the '_id' field in descending order (-1).
+            // Mongoose ObjectIDs contain a timestamp, so sorting by _id is an
+            // efficient way to sort by creation time.
+            .sort({ _id: -1 }); 
 
-//     });
-//     await newOrder.save(); // It's good practice to await this
-//     res.send("Order saved!");
-// });
+        res.json(allOrders);
+    } catch (error) {
+        console.error("Failed to fetch orders:", error);
+        res.status(500).json({ message: "An error occurred while fetching orders." });
+    }
+});
 
-
-
-// ================================================================
-// ==================== UPGRADED NEW ORDER (BUY) ROUTE ====================
-// ================================================================
-// app.post('/newOrder', userVerification, async (req, res) => {
-//     const { name, qty, price, mode } = req.body;
-//     const userId = req.userId;
-
-//     // --- Part 1: Save the Order as a Transaction Record ---
-//     const newOrder = new OrdersModel({ name, qty, price, mode, userId });
-//     await newOrder.save();
-
-//     // --- Part 2: Update Holdings Portfolio if it's a BUY order ---
-//     if (mode === 'BUY') {
-//         try {
-//             const existingHolding = await HoldingsModel.findOne({ name: name, userId: userId });
-
-//             if (existingHolding) {
-//                 // --- LOGIC FOR EXISTING HOLDING ---
-//                 // If the user already owns this stock, we update the average cost.
-//                 const oldQty = existingHolding.qty;
-//                 const oldAvg = existingHolding.avg;
-
-//                 // The formula for the new weighted average price
-//                 const newTotalQty = oldQty + qty;
-//                 const newAvgPrice = ((oldQty * oldAvg) + (qty * price)) / newTotalQty;
-
-//                 // Update the holding with the new values
-//                 existingHolding.qty = newTotalQty;
-//                 existingHolding.avg = newAvgPrice;
-//                 existingHolding.price = price; // Update LTP to the latest buy price
-
-//                 await existingHolding.save();
-//             } else {
-//                 // --- LOGIC FOR NEW HOLDING ---
-//                 // If this is a new stock for the user, create a brand new holding document.
-//                 const newHolding = new HoldingsModel({
-//                     name: name,
-//                     qty: qty,
-//                     avg: price, // For the first purchase, the average cost IS the buy price
-//                     price: price,
-//                     net: "0.00%", // Initialize net/day changes
-//                     day: "0.00%",
-//                     userId: userId,
-//                 });
-//                 await newHolding.save();
-//             }
-//         } catch (error) {
-//             console.error("Failed to update holdings after buy order:", error);
-//             // This part is for logging. The user's order was still saved successfully.
-//         }
-//     }
-
-//     res.status(201).send("Order placed and portfolio updated successfully!");
-// });
-// REPLACE your /newOrder route with this DEBUG version.
-
-// app.post('/newOrder', userVerification, async (req, res) => {
-//     // --- DEBUG STEP 1: Log the incoming data ---
-//     console.log("--- New Order Request Received ---");
-//     console.log("Request Body:", req.body);
-
-//     const { name, qty, price, mode } = req.body;
-//     const userId = req.userId;
-
-//     // Save the transaction record.
-//     const newOrder = new OrdersModel({ name, qty, price, mode, userId });
-//     await newOrder.save();
-//     console.log("Order document saved successfully.");
-
-//     if (mode === 'BUY') {
-//         try {
-//             // --- DEBUG STEP 2: Log what we are searching for ---
-//             console.log(`Searching for existing holding with name: ${name} and userId: ${userId}`);
-//             const existingHolding = await HoldingsModel.findOne({ name: name, userId: userId });
-
-//             // --- DEBUG STEP 3: Log the result of the search ---
-//             console.log("Result of findOne:", existingHolding);
-
-//             if (existingHolding) {
-//                 console.log("--- FOUND existing holding. Entering UPDATE logic. ---");
-//                 // Update logic here...
-//                 const oldQty = existingHolding.qty;
-//                 const oldAvg = existingHolding.avg;
-//                 const newTotalQty = oldQty + qty;
-//                 const newAvgPrice = ((oldQty * oldAvg) + (qty * price)) / newTotalQty;
-//                 existingHolding.qty = newTotalQty;
-//                 existingHolding.avg = newAvgPrice;
-//                 existingHolding.price = price;
-//                 await existingHolding.save();
-//                 console.log("--- Holding UPDATED successfully. ---");
-
-//             } else {
-//                 console.log("--- DID NOT find existing holding. Entering CREATE logic. ---");
-//                 // Create logic here...
-//                 const newHolding = new HoldingsModel({
-//                     name: name,
-//                     qty: qty,
-//                     avg: price,
-//                     price: price,
-//                     userId: userId,
-//                 });
-//                 await newHolding.save();
-//                 console.log("--- New holding CREATED successfully. ---");
-//             }
-//         } catch (error) {
-//             console.error("!!! CRITICAL ERROR in holdings update !!!:", error);
-//         }
-//     }
-
-//     res.status(201).json({ message: "Order placed and portfolio updated successfully!" });
-// });
 
 // ==========================================================
-// ================= FINAL, ROBUST /newOrder ROUTE =================
+// ==================== NEW API ROUTES ========================
 // ==========================================================
-// app.post('/newOrder', userVerification, async (req, res) => {
-//     const { name, qty, price, mode } = req.body;
-//     const userId = req.userId;
 
-//     // Save the transaction record first. This part works perfectly.
-//     const newOrder = new OrdersModel({ name, qty, price, mode, userId });
-//     await newOrder.save();
 
-//     if (mode === 'BUY') {
-//         try {
-//             // Find the existing holding using a more direct query method.
-//             // This is less prone to subtle schema/type issues.
-//             const existingHolding = await HoldingsModel.findOne({ 
-//                 name: name, 
-//                 userId: new mongoose.Types.ObjectId(userId) // Explicitly cast userId to an ObjectId
-//             });
+// In backend/index.js
 
-//             if (existingHolding) {
-//                 // --- UPDATE LOGIC ---
-//                 const oldQty = existingHolding.qty;
-//                 const oldAvg = existingHolding.avg;
-//                 const newTotalQty = oldQty + qty;
-//                 const newAvgPrice = ((oldQty * oldAvg) + (qty * price)) / newTotalQty;
+app.get('/stock-search/:keywords', userVerification, async (req, res) => {
+    const keywords = req.params.keywords;
+    const apiKey = process.env.ALPHA_VANTAGE_API_KEY;
 
-//                 // Update the document found.
-//                 existingHolding.qty = newTotalQty;
-//                 existingHolding.avg = newAvgPrice;
-//                 existingHolding.price = price;
-                
-//                 await existingHolding.save();
-//                 console.log(`--- Holding for ${name} UPDATED successfully. ---`);
+    // --- DEBUGGING: Log to make sure the key is loaded ---
+    console.log(`Searching for '${keywords}' with API Key: ${apiKey ? 'Loaded' : 'MISSING!'}`);
 
-//             } else {
-//                 // --- CREATE LOGIC ---
-//                 const newHolding = new HoldingsModel({
-//                     name: name,
-//                     qty: qty,
-//                     avg: price,
-//                     price: price,
-//                     userId: userId
-//                 });
-//                 await newHolding.save();
-//                 console.log(`--- New holding for ${name} CREATED successfully. ---`);
-//             }
-//         } catch (error) {
-//             console.error("!!! CRITICAL ERROR in holdings update/create !!!:", error);
-//         }
-//     }
+    if (!apiKey) {
+        return res.status(500).json({ message: "API key is not configured on the server." });
+    }
 
-//     res.status(201).json({ message: "Order placed and portfolio updated successfully!" });
-// });
+    const url = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${keywords}&apikey=${apiKey}`;
+
+    try {
+        const response = await axios.get(url);
+
+        // --- DEBUGGING: Log the response from Alpha Vantage ---
+        console.log("Alpha Vantage Response:", response.data);
+
+        // Check for API limit note or other errors
+        if (response.data.Note || !response.data.bestMatches) {
+            console.error("Alpha Vantage API limit likely reached or no matches found.");
+            return res.status(503).json({ message: 'Error from stock API. Please try again later.' });
+        }
+
+        const bestMatches = response.data.bestMatches.slice(0, 5);
+        res.json(bestMatches);
+
+    } catch (error) {
+        // --- DEBUGGING: Log the full error ---
+        console.error("Error calling Alpha Vantage API:", error.message);
+        res.status(500).json({ message: "Failed to fetch stock data from the external API." });
+    }
+});
+
+
+// --- 2. GET USER'S WATCHLIST ---
+app.get('/watchlist', userVerification, async (req, res) => {
+    try {
+        let watchlist = await WatchlistModel.findOne({ userId: req.userId });
+        if (!watchlist) {
+            // If user has no watchlist, create an empty one for them
+            watchlist = new WatchlistModel({ userId: req.userId, symbols: [] });
+            await watchlist.save();
+        }
+        res.json(watchlist.symbols);
+    } catch (error) {
+        res.status(500).json({ message: "Failed to fetch watchlist." });
+    }
+});
+
+app.get('/profile', userVerification, async (req, res) => {
+    try {
+        // req.userId is from our middleware. Find the user but exclude the password field.
+        const user = await UserModel.findById(req.userId).select('-password');
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.json(user); // Send the user object back
+    } catch (error) {
+        res.status(500).json({ message: "Server error while fetching profile." });
+    }
+});
 
 // ==========================================================
-// ================= FINAL, ROBUST /newOrder ROUTE =================
+// ================= NEW ROUTE FOR MARKET INDICES ===============
 // ==========================================================
+app.get('/market-indices', userVerification, async (req, res) => {
+    const apiKey = process.env.ALPHA_VANTAGE_API_KEY;
+    const niftySymbol = 'NSEI';
+    const sensexSymbol = 'BSESN';
+
+    const niftyUrl = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${niftySymbol}&apikey=${apiKey}`;
+    const sensexUrl = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${sensexSymbol}&apikey=${apiKey}`;
+
+    try {
+        // Use Promise.all to fetch both data points concurrently for efficiency
+        const [niftyResponse, sensexResponse] = await Promise.all([
+            axios.get(niftyUrl),
+            axios.get(sensexUrl)
+        ]);
+
+        const niftyData = niftyResponse.data['Global Quote'];
+        const sensexData = sensexResponse.data['Global Quote'];
+
+        // Check if data was returned successfully
+        if (!niftyData || !sensexData || Object.keys(niftyData).length === 0) {
+            return res.status(503).json({ message: "Could not fetch index data. API limit may be reached." });
+        }
+
+        const formattedResponse = {
+            nifty: {
+                price: parseFloat(niftyData['05. price']),
+                change: parseFloat(niftyData['09. change']),
+                changePercent: niftyData['10. change percent']
+            },
+            sensex: {
+                price: parseFloat(sensexData['05. price']),
+                change: parseFloat(sensexData['09. change']),
+                changePercent: sensexData['10. change percent']
+            }
+        };
+
+        res.json(formattedResponse);
+
+    } catch (error) {
+        console.error("Error fetching market indices:", error.message);
+        res.status(500).json({ message: "Failed to fetch index data from external API." });
+    }
+});
+
+
+// --- 3. ADD A SYMBOL TO WATCHLIST ---
+app.post('/watchlist/add', userVerification, async (req, res) => {
+    const { symbol } = req.body;
+    if (!symbol) return res.status(400).json({ message: "Symbol is required." });
+
+    try {
+        // Find the user's watchlist and add the new symbol if it's not already there
+        const result = await WatchlistModel.updateOne(
+            { userId: req.userId },
+            { $addToSet: { symbols: symbol.toUpperCase() } },
+            { upsert: true } // Creates the watchlist if it doesn't exist
+        );
+        res.status(200).json({ message: `${symbol} added to watchlist.` });
+    } catch (error) {
+        res.status(500).json({ message: "Failed to add to watchlist." });
+    }
+});
+
+
+// --- 4. REMOVE A SYMBOL FROM WATCHLIST ---
+app.post('/watchlist/remove', userVerification, async (req, res) => {
+    const { symbol } = req.body;
+    if (!symbol) return res.status(400).json({ message: "Symbol is required." });
+
+    try {
+        // Find the user's watchlist and pull the symbol from the array
+        const result = await WatchlistModel.updateOne(
+            { userId: req.userId },
+            { $pull: { symbols: symbol.toUpperCase() } }
+        );
+        res.status(200).json({ message: `${symbol} removed from watchlist.` });
+    } catch (error) {
+        res.status(500).json({ message: "Failed to remove from watchlist." });
+    }
+});
+
+
+// ====================================================================
+// =================== FINAL ROUTES USING THE FIXED MODEL ===================
+// ====================================================================
+
 app.post('/newOrder', userVerification, async (req, res) => {
     const { name, qty, price, mode } = req.body;
     const userId = req.userId;
@@ -240,90 +239,61 @@ app.post('/newOrder', userVerification, async (req, res) => {
 
     if (mode === 'BUY') {
         try {
-            // This query is more robust and guaranteed to find the holding if it exists.
-            const existingHolding = await HoldingsModel.findOne({ 
-                name: name, 
-                userId: new mongoose.Types.ObjectId(userId)
-            });
+            const existingHolding = await HoldingsModel.findOne({ name: name, userId: userId });
 
             if (existingHolding) {
-                // --- UPDATE LOGIC ---
                 const oldQty = existingHolding.qty;
                 const oldAvg = existingHolding.avg;
                 const newTotalQty = oldQty + qty;
                 const newAvgPrice = ((oldQty * oldAvg) + (qty * price)) / newTotalQty;
-
                 existingHolding.qty = newTotalQty;
                 existingHolding.avg = newAvgPrice;
                 existingHolding.price = price;
                 await existingHolding.save();
-
             } else {
-                // --- CREATE LOGIC ---
                 const newHolding = new HoldingsModel({
-                    name: name, qty: qty, avg: price, price: price, userId: userId
+                    name, qty, avg: price, price, userId
                 });
                 await newHolding.save();
             }
         } catch (error) {
-            console.error("!!! CRITICAL ERROR in holdings update/create !!!:", error);
+            console.error("Holdings update failed:", error);
         }
     }
-    res.status(201).json({ message: "Order placed and portfolio updated successfully!" });
+    res.status(201).json({ message: "Order placed successfully!" });
 });
-// ==========================================================
-// ==================== NEW SELL ORDER ROUTE ====================
-// ==========================================================
+
+
 app.post('/sellOrder', userVerification, async (req, res) => {
-    // We expect the stock's name and the quantity to sell from the frontend
     const { name, qty } = req.body;
     const userId = req.userId;
 
-    // --- Basic Validation ---
-    if (!name || !qty || qty <= 0) {
-        return res.status(400).json({ message: "Invalid order details provided." });
-    }
-
     try {
-        // --- Step A: Find the user's current holding of this specific stock ---
         const holding = await HoldingsModel.findOne({ name: name, userId: userId });
 
-        // --- Step B: Perform Critical Validation Checks ---
         if (!holding) {
             return res.status(404).json({ message: "Sell failed. You do not own this stock." });
         }
         if (qty > holding.qty) {
-            return res.status(400).json({ message: `Sell failed. Insufficient quantity. You only own ${holding.qty} shares.` });
+            return res.status(400).json({ message: `Sell failed. You only own ${holding.qty}.` });
         }
 
-        // --- Step C: Update or Delete the Holding ---
-        // Subtract the sold quantity from the user's holding
         holding.qty -= qty;
 
         if (holding.qty === 0) {
-            // If the user has sold all their shares, remove the holding entirely
             await HoldingsModel.deleteOne({ _id: holding._id });
         } else {
-            // Otherwise, just save the new, lower quantity
             await holding.save();
         }
 
-        // --- Step D: Create a Transaction Record in the Orders Collection ---
-        // We use the holding's average price for this record, as LTP might fluctuate
         const newOrder = new OrdersModel({
-            name: name,
-            qty: qty,
-            price: holding.avg, // Use the average price for the order record
-            mode: "SELL",
-            userId: userId,
+            name, qty, price: holding.avg, mode: "SELL", userId
         });
         await newOrder.save();
-
         res.status(201).json({ message: `Successfully sold ${qty} shares of ${name}.` });
-
     } catch (error) {
-        console.error("Sell order processing failed:", error);
-        res.status(500).json({ message: "An error occurred on the server during the sell transaction." });
+        console.error("Sell order failed:", error);
+        res.status(500).json({ message: "An error occurred." });
     }
 });
 
