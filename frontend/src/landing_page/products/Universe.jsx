@@ -40,9 +40,15 @@ function Universe() {
         </div>
         
         <div className="text-center">
-          <a href="#" className="signup-button">
+          {/* --- THIS IS THE CHANGE --- */}
+          {/* Replaced the placeholder href="#" with the dynamic URL */}
+          <a 
+            href={`${import.meta.env.VITE_DASHBOARD_URL}/signup`} 
+            className="signup-button"
+          >
             Signup Now
           </a>
+          {/* --- END OF CHANGE --- */}
         </div>
       </div>
     </section>
