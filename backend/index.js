@@ -28,7 +28,7 @@ const app = express();
 // --- 1. MIDDLEWARE SETUP (MUST be before routes) ---
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://localhost:5173"], 
+    origin: [process.env.VITE_DASHBOARD_URL, process.env.VITE_API_URL], 
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
