@@ -28,7 +28,7 @@ const app = express();
 // --- 1. MIDDLEWARE SETUP (MUST be before routes) ---
 app.use(
   cors({
-    origin: [process.env.VITE_DASHBOARD_URL, process.env.VITE_API_URL], 
+    origin: [process.env.DASHBOARD_URL, process.env.FRONTEND_URL], 
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
