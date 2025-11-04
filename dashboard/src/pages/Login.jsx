@@ -1,8 +1,7 @@
 // dashboard/src/pages/Login.jsx
 
 import React, { useState } from "react";
-// --- CHANGE #1: Import Navigate instead of useNavigate ---
-import { Link, Navigate } from "react-router-dom";
+import { Link } from "react-router-dom"; // We no longer need Navigate
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -13,10 +12,9 @@ const Login = () => {
   });
   const { email, password } = inputValue;
 
-  // --- CHANGE #2: Add a new state to track successful login ---
-  const [loginSuccess, setLoginSuccess] = useState(false);
+  // We no longer need the loginSuccess state
+  // const [loginSuccess, setLoginSuccess] = useState(false);
 
-  // --- Helper Functions for Notifications (No changes needed) ---
   const handleError = (err) =>
     toast.error(err, {
       position: "bottom-left",
@@ -26,7 +24,6 @@ const Login = () => {
       position: "bottom-left",
     });
 
-  // --- Handles changes in the input fields (No changes needed) ---
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setInputValue({
@@ -35,7 +32,6 @@ const Login = () => {
     });
   };
 
-  // --- Handles the form submission ---
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -47,39 +43,30 @@ const Login = () => {
       const { success, message } = data;
       if (success) {
         handleSuccess(message);
-        // --- CHANGE #3: Instead of a timeout/reload, just set the state ---
-        setLoginSuccess(true);
+        
+        // --- THIS IS THE DEFINITIVE FIX ---
+        // We use a timeout and a full page reload to ensure the cookie
+        // is readable by the browser before the app re-initializes.
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 1000); // 1-second delay for the toast message to be visible
+
       } else {
         handleError(message);
       }
     } catch (error) {
       console.log(error);
+      handleError("An error occurred during login.");
     }
-    // This part is fine, it will clear the form fields on a failed attempt
-    setInputValue({
-      ...inputValue,
-      email: "",
-      password: "",
-    });
   };
+  
+  // We no longer need the conditional redirect logic.
+  // if (loginSuccess) { ... }
 
-  // --- CHANGE #4: Add conditional rendering for the redirect ---
-  // If loginSuccess becomes true, this component will render the <Navigate>
-  // component, which reliably tells React Router to change the page.
-  if (loginSuccess) {
-    // The 'replace' prop is a best practice. It prevents the user from
-    // clicking the browser's "back" button to return to the login page.
-    return <Navigate to="/" replace />;
-  }
-
-  // If login is not successful, render the form as usual.
   return (
     <div className="auth-page-container">
       <div className="auth-card">
-        {/* The background image is set via CSS */}
         <div className="auth-image-section"></div>
-
-        {/* Right Side: Form Section */}
         <div className="auth-form-section">
           <img src="/logo.png" alt="Logo" className="auth-logo" />
           <h2>Welcome Back</h2>
