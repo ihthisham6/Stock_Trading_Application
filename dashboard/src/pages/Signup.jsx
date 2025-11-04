@@ -1,21 +1,23 @@
 // dashboard/src/pages/Signup.jsx
 
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+// --- CHANGE #1: Import Navigate instead of useNavigate ---
+import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
 const Signup = () => {
-  const navigate = useNavigate();
   const [inputValue, setInputValue] = useState({
     email: "",
     password: "",
     username: "",
   });
-
   const { email, password, username } = inputValue;
 
-  // --- Helper Functions for Notifications ---
+  // --- CHANGE #2: Add a new state to track successful signup ---
+  const [signupSuccess, setSignupSuccess] = useState(false);
+
+  // --- Helper Functions for Notifications (No changes needed) ---
   const handleError = (err) =>
     toast.error(err, {
       position: "bottom-left",
@@ -25,7 +27,7 @@ const Signup = () => {
       position: "bottom-left",
     });
 
-  // --- Handles changes in the input fields ---
+  // --- Handles changes in the input fields (No changes needed) ---
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setInputValue({
@@ -39,18 +41,15 @@ const Signup = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/signup`, // Using your .env variable
-        {
-          ...inputValue,
-        },
-        { withCredentials: true } // Essential for sending cookies
+        `${import.meta.env.VITE_API_URL}/signup`,
+        { ...inputValue },
+        { withCredentials: true }
       );
       const { success, message } = data;
       if (success) {
         handleSuccess(message);
-        setTimeout(() => {
-          navigate("/"); // Redirect to dashboard on success
-        }, 1000);
+        // --- CHANGE #3: Instead of a timeout/reload, just set the state ---
+        setSignupSuccess(true);
       } else {
         handleError(message);
       }
@@ -65,60 +64,17 @@ const Signup = () => {
     });
   };
 
-//   return (
-//     <div className="form_container">
-//       <h2>Signup Account</h2>
-//       <form onSubmit={handleSubmit}>
-//         <div>
-//           <label htmlFor="email">Email</label>
-//           <input
-//             type="email"
-//             name="email"
-//             value={email}
-//             placeholder="Enter your email"
-//             onChange={handleOnChange}
-//           />
-//         </div>
-//         <div>
-//           <label htmlFor="username">Username</label>
-//           <input
-//             type="text"
-//             name="username"
-//             value={username}
-//             placeholder="Enter your username"
-//             onChange={handleOnChange}
-//           />
-//         </div>
-//         <div>
-//           <label htmlFor="password">Password</label>
-//           <input
-//             type="password"
-//             name="password"
-//             value={password}
-//             placeholder="Enter your password"
-//             onChange={handleOnChange}
-//           />
-//         </div>
-//         <button type="submit">Submit</button>
-//         <span>
-//           Already have an account? <Link to={"/login"}>Login</Link>
-//         </span>
-//       </form>
-//       <ToastContainer />
-//     </div>
-//   );
+  // --- CHANGE #4: Add conditional rendering for the redirect ---
+  if (signupSuccess) {
+    return <Navigate to="/" replace />;
+  }
 
-// In dashboard/src/pages/Signup.jsx
-
-// ... (keep all your existing imports, useState, and handler functions)
-
+  // If signup is not successful, render the form as usual.
   return (
     <div className="auth-page-container">
       <div className="auth-card">
-        {/* Left Side: Image Section */}
         <div className="auth-image-section"></div>
 
-        {/* Right Side: Form Section */}
         <div className="auth-form-section">
           <img src="/logo.png" alt="Logo" className="auth-logo" />
           <h2>Create Your Account</h2>
@@ -169,9 +125,6 @@ const Signup = () => {
       <ToastContainer />
     </div>
   );
-  
-// ... (keep export default Signup;)
-
 };
 
 export default Signup;

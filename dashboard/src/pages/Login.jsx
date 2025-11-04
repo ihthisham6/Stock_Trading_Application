@@ -1,19 +1,22 @@
 // dashboard/src/pages/Login.jsx
 
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+// --- CHANGE #1: Import Navigate instead of useNavigate ---
+import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
 const Login = () => {
-  const navigate = useNavigate();
   const [inputValue, setInputValue] = useState({
     email: "",
     password: "",
   });
   const { email, password } = inputValue;
 
-  // --- Helper Functions for Notifications ---
+  // --- CHANGE #2: Add a new state to track successful login ---
+  const [loginSuccess, setLoginSuccess] = useState(false);
+
+  // --- Helper Functions for Notifications (No changes needed) ---
   const handleError = (err) =>
     toast.error(err, {
       position: "bottom-left",
@@ -23,7 +26,7 @@ const Login = () => {
       position: "bottom-left",
     });
 
-  // --- Handles changes in the input fields ---
+  // --- Handles changes in the input fields (No changes needed) ---
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setInputValue({
@@ -37,26 +40,22 @@ const Login = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        `${import.meta.env.VITE_API_URL}/login`, // Using your .env variable
-        {
-          ...inputValue,
-        },
-        { withCredentials: true } // Essential for sending cookies
+        `${import.meta.env.VITE_API_URL}/login`,
+        { ...inputValue },
+        { withCredentials: true }
       );
-      console.log(data);
       const { success, message } = data;
       if (success) {
         handleSuccess(message);
-        console.log("LOGIN SUCCESSFUL! Preparing to navigate...");
-        setTimeout(() => {
-            window.location.href = "/";  // Redirect to dashboard on success
-        }, 1000);
+        // --- CHANGE #3: Instead of a timeout/reload, just set the state ---
+        setLoginSuccess(true);
       } else {
         handleError(message);
       }
     } catch (error) {
       console.log(error);
     }
+    // This part is fine, it will clear the form fields on a failed attempt
     setInputValue({
       ...inputValue,
       email: "",
@@ -64,53 +63,21 @@ const Login = () => {
     });
   };
 
-//   return (
-//     <div className="form_container">
-//       <h2>Login Account</h2>
-//       <form onSubmit={handleSubmit}>
-//         <div>
-//           <label htmlFor="email">Email</label>
-//           <input
-//             type="email"
-//             name="email"
-//             value={email}
-//             placeholder="Enter your email"
-//             onChange={handleOnChange}
-//           />
-//         </div>
-//         <div>
-//           <label htmlFor="password">Password</label>
-//           <input
-//             type="password"
-//             name="password"
-//             value={password}
-//             placeholder="Enter your password"
-//             onChange={handleOnChange}
-//           />
-//         </div>
-//         <button type="submit">Submit</button>
-//         <span>
-//           Don't have an account? <Link to={"/signup"}>Signup</Link>
-//         </span>
-//       </form>
-//       <ToastContainer />
-//     </div>
-//   );
-// };
+  // --- CHANGE #4: Add conditional rendering for the redirect ---
+  // If loginSuccess becomes true, this component will render the <Navigate>
+  // component, which reliably tells React Router to change the page.
+  if (loginSuccess) {
+    // The 'replace' prop is a best practice. It prevents the user from
+    // clicking the browser's "back" button to return to the login page.
+    return <Navigate to="/" replace />;
+  }
 
-// export default Login;
-
-// In dashboard/src/pages/Login.jsx
-
-// ... (keep all your existing imports, useState, and handler functions)
-
+  // If login is not successful, render the form as usual.
   return (
     <div className="auth-page-container">
       <div className="auth-card">
-        {/* Left Side: Image Section */}
-        <div className="auth-image-section">
-          {/* The background image is set via CSS */}
-        </div>
+        {/* The background image is set via CSS */}
+        <div className="auth-image-section"></div>
 
         {/* Right Side: Form Section */}
         <div className="auth-form-section">
