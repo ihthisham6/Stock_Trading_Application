@@ -39,6 +39,16 @@ app.use(cookieParser());
 // --- 2. ROUTES REGISTRATION ---
 app.use("/", authRoute); // For /login, /signup
 
+// ==========================================================
+// ============ NEW ENDPOINT FOR SESSION VERIFICATION ============
+// ==========================================================
+app.get('/verify', userVerification, (req, res) => {
+    // If the userVerification middleware succeeds, the user is authenticated.
+    // The middleware itself handles the token checking. If it fails, it won't even reach this point.
+    // We can simply send back a success status.
+    res.status(200).json({ status: true, message: "User is authenticated" });
+});
+
 // Your existing API routes for data
 app.get('/allHoldings',userVerification, async (req, res) => {
   let allHoldings = await HoldingsModel.find({userId: req.userId});
