@@ -2,12 +2,16 @@
 <div align-center">
 A feature-rich, full-stack stock trading and portfolio management platform built from the ground up with the MERN stack (MongoDB, Express.js, React, Node.js). This project demonstrates a comprehensive set of features, from secure user authentication to live stock data integration.
 </div>
+
 Live Demo
 Application	Link
+
 Landing Page	https://stock-trading-application.vercel.app
 Dashboard App	https://stock-trading-application-app.vercel.app
 Recruiter Access	Click for Demo Login
+
 Note: The backend is hosted on a free Render instance, which may "spin down" after a period of inactivity. The first request might take up to 30 seconds to wake the server.
+
 🚀 Key Features
 This project is a complete, dynamic application demonstrating a wide range of full-stack development skills and professional architectural patterns.
 Secure JWT Authentication: Full user registration and login system using JSON Web Tokens (JWT) stored in secure cookies. Passwords are encrypted using bcryptjs, and new accounts require strong passwords.
@@ -25,6 +29,7 @@ Portfolio summary figures (Total Investment, Current Value, P&L) are calculated 
 Visual data representation through dynamic charts that update based on portfolio and watchlist composition.
 Demo Login for Recruiters: A one-click "Demo Login" feature provides instant access to a pre-populated user account, showcasing the application's full functionality without requiring signup.
 Three-Part Monorepo Architecture: The project is professionally structured into three distinct applications within a single GitHub repository: a marketing frontend, the main dashboard application, and the backend API.
+
 🛠️ Tech Stack & Architecture
 Tech Stack
 Category	Technologies
@@ -37,6 +42,7 @@ frontend (Deployed on Vercel): A static marketing and landing page built with Re
 dashboard (Deployed on Vercel): The core Single-Page Application (SPA) where users manage their portfolio. It communicates with the backend API to fetch and manipulate all user data and handles all authenticated views.
 backend (Deployed on Render): A Node.js/Express RESTful API that handles all business logic, user authentication, database interactions, and secure communication with third-party services like Alpha Vantage.
 All cross-domain communication between the Vercel frontends and the Render backend is securely handled via a precise CORS (Cross-Origin Resource Sharing) configuration.
+
 ⚙️ Running Locally
 To get a local copy up and running, follow these simple steps.
 Prerequisites
@@ -92,14 +98,17 @@ Bash
 cd frontend
 npm run dev
 You can now access the landing page at http://localhost:5173 and the main dashboard/login at http://localhost:3000.
+
 ☁️ Deployment
 The application is deployed on a modern, scalable cloud stack:
 Frontend & Dashboard: Deployed as two separate projects on Vercel, leveraging its global CDN for optimal performance and automatic CI/CD from the main branch. A vercel.json file in each frontend ensures correct routing for a Single-Page Application.
 Backend API: Hosted on Render as a Web Service, which also provides automatic deployments on every push to main.
 Database: A managed MongoDB Atlas cluster ensures high availability and scalability for the database.
+
 🔮 Future Improvements
 ML-Powered Portfolio Analysis: Add a new "Analysis" tab that calls a Python microservice to provide users with insights into their portfolio's sector diversification and risk profile (Beta calculation).
 Full Mobile Responsiveness: Add CSS media queries and leverage Bootstrap's responsive utilities to ensure the application is fully usable and looks professional on tablet and mobile devices.
+
 👨‍💻 Author
 Ihthisham Raafee
 GitHub: @ihthisham6
