@@ -113,7 +113,7 @@ function Navbar() {
  <li className="nav-item">
       <a 
         className="nav-link active text-secondary" // Use a secondary, muted color
-        href={`${import.meta.env.VITE_DASHBOARD_URL}/demo`}
+        href={`${import.meta.env.VITE_DASHBOARD_URL}`}
       >
         Demo Login
       </a>
