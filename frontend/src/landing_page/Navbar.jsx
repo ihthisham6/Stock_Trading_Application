@@ -100,15 +100,25 @@ function Navbar() {
             {/* --- THIS IS THE CRITICAL CHANGE --- */}
 
              {/* --- THIS IS THE NEW DEMO BUTTON --- */}
-            <li className="nav-item me-2"> {/* me-2 adds a margin to the right */}
-              <a 
+            {/* <li className="nav-item me-2">  */}
+              {/* me-2 adds a margin to the right */}
+              {/* <a 
                 className="nav-link active btn btn-outline-secondary btn-sm" // Bootstrap button styling
                 href={`${import.meta.env.VITE_DASHBOARD_URL}/demo`}
               >
                 Demo Login
               </a>
-            </li>
+            </li> */}
             {/* --- END OF NEW BUTTON --- */}
+ <li className="nav-item">
+      <a 
+        className="nav-link active text-secondary" // Use a secondary, muted color
+        href={`${import.meta.env.VITE_DASHBOARD_URL}/demo`}
+      >
+        Demo Login
+      </a>
+    </li>
+
             <li className="nav-item">
               {/* This is now a standard <a> tag pointing to the dashboard app */}
               <a 
