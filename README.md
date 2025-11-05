@@ -62,11 +62,17 @@ Architecture
 
 The application is architected as a monorepo containing three decoupled services, a pattern used in modern web development for scalability and separation of concerns.
 
-frontend (Deployed on Vercel): A static marketing and landing page built with React and Vite. Its primary purpose is to introduce the platform and funnel users to the main application via standard <a> tag navigation.
+frontend (Deployed on Vercel):
 
-dashboard (Deployed on Vercel): The core Single-Page Application (SPA) where users manage their portfolio. It communicates with the backend API to fetch and manipulate all user data and handles all authenticated views.
+A static marketing and landing page built with React and Vite. Its primary purpose is to introduce the platform and funnel users to the main application via standard <a> tag navigation.
 
-backend (Deployed on Render): A Node.js/Express RESTful API that handles all business logic, user authentication, database interactions, and secure communication with third-party services like Alpha Vantage.
+dashboard (Deployed on Vercel):
+
+The core Single-Page Application (SPA) where users manage their portfolio. It communicates with the backend API to fetch and manipulate all user data and handles all authenticated views.
+
+backend (Deployed on Render):
+
+A Node.js/Express RESTful API that handles all business logic, user authentication, database interactions, and secure communication with third-party services like Alpha Vantage.
 All cross-domain communication between the Vercel frontends and the Render backend is securely handled via a precise CORS (Cross-Origin Resource Sharing) configuration.
 
 ⚙️ Running Locally
@@ -81,13 +87,18 @@ npm
 
 A MongoDB Atlas account and connection string
 
+
+
 Installation & Setup
+
+
 
 Clone the repository:
 
 git clone https://github.com/ihthisham6/Stock_Trading_Application.git
 
 cd Stock_Trading_Application
+
 
 
 Backend Setup:
@@ -109,6 +120,7 @@ DASHBOARD_URL=http://localhost:3000
 FRONTEND_URL=http://localhost:5173
 
 
+
 Dashboard Setup:
 
 Navigate to the dashboard folder: 
@@ -120,6 +132,7 @@ Install dependencies: npm install
 Create a .env file and add the following:
 
 VITE_API_URL=http://localhost:3002
+
 
 
 Frontend Setup:
@@ -135,9 +148,11 @@ Create a .env file and add the following:
 VITE_DASHBOARD_URL=http://localhost:3000
 
 
+
 Running the Application
 
 You will need to open three separate terminals to run all services concurrently.
+
 
 
 Run the Backend:
@@ -147,11 +162,13 @@ cd backend
 npm start
 
 
+
 Run the Dashboard App:
 
 cd dashboard
 
 npm run dev
+
 
 
 Run the Frontend Landing Page:
@@ -168,11 +185,17 @@ You can now access the landing page at http://localhost:5173 and the main dashbo
 
 The application is deployed on a modern, scalable cloud stack:
 
-Frontend & Dashboard: Deployed as two separate projects on Vercel, leveraging its global CDN for optimal performance and automatic CI/CD from the main branch. A vercel.json file in each frontend ensures correct routing for a Single-Page Application.
+Frontend & Dashboard:
 
-Backend API: Hosted on Render as a Web Service, which also provides automatic deployments on every push to main.
+Deployed as two separate projects on Vercel, leveraging its global CDN for optimal performance and automatic CI/CD from the main branch. A vercel.json file in each frontend ensures correct routing for a Single-Page Application.
 
-Database: A managed MongoDB Atlas cluster ensures high availability and scalability for the database.
+Backend API: 
+
+Hosted on Render as a Web Service, which also provides automatic deployments on every push to main.
+
+Database:
+
+A managed MongoDB Atlas cluster ensures high availability and scalability for the database.
 
 🔮 Future Improvements
 
