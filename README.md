@@ -7,8 +7,8 @@ Live Demo
 Application	Link
 
 Landing Page	https://stock-trading-application.vercel.app
+
 Dashboard App	https://stock-trading-application-app.vercel.app
-Recruiter Access	Click for Demo Login
 
 Note: The backend is hosted on a free Render instance, which may "spin down" after a period of inactivity. The first request might take up to 30 seconds to wake the server.
 
