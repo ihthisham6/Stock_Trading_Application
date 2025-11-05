@@ -50,13 +50,13 @@ Three-Part Monorepo Architecture: The project is professionally structured into 
 
 Tech Stack
 
-Category   &nbsp;&nbsp; 	Technologies
+Category   &nbsp;&nbsp;&nbsp;&nbsp;	Technologies
 
-Frontend   &nbsp;&nbsp;  	React, Vite, React Router, Axios, Bootstrap, Chart.js.
+Frontend   &nbsp;&nbsp;&nbsp;&nbsp;  	React, Vite, React Router, Axios, Bootstrap, Chart.js.
 
-Backend	    &nbsp;&nbsp;  Node.js, Express.js, Mongoose, JWT, bcryptjs, cookie-parser, CORS, dotenv
+Backend	    &nbsp;&nbsp;&nbsp;&nbsp;  Node.js, Express.js, Mongoose, JWT, bcryptjs, cookie-parser, CORS, dotenv
 
-Database	   &nbsp;&nbsp;  MongoDB Atlas (Cloud-hosted NoSQL database)
+Database	   &nbsp;&nbsp;&nbsp;&nbsp;  MongoDB Atlas (Cloud-hosted NoSQL database)
 
 Architecture
 
@@ -89,6 +89,7 @@ git clone https://github.com/ihthisham6/Stock_Trading_Application.git
 
 cd Stock_Trading_Application
 
+
 Backend Setup:
 
 Navigate to the backend folder: cd backend
@@ -107,6 +108,7 @@ DASHBOARD_URL=http://localhost:3000
 
 FRONTEND_URL=http://localhost:5173
 
+
 Dashboard Setup:
 
 Navigate to the dashboard folder: 
@@ -118,6 +120,7 @@ Install dependencies: npm install
 Create a .env file and add the following:
 
 VITE_API_URL=http://localhost:3002
+
 
 Frontend Setup:
 
@@ -131,9 +134,11 @@ Create a .env file and add the following:
 
 VITE_DASHBOARD_URL=http://localhost:3000
 
+
 Running the Application
 
 You will need to open three separate terminals to run all services concurrently.
+
 
 Run the Backend:
 
@@ -141,11 +146,13 @@ cd backend
 
 npm start
 
+
 Run the Dashboard App:
 
 cd dashboard
 
 npm run dev
+
 
 Run the Frontend Landing Page:
 
@@ -153,7 +160,9 @@ cd frontend
 
 npm run dev
 
+
 You can now access the landing page at http://localhost:5173 and the main dashboard/login at http://localhost:3000.
+
 
 ☁️ Deployment
 
