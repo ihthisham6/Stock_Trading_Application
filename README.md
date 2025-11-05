@@ -76,7 +76,9 @@ To get a local copy up and running, follow these simple steps.
 Prerequisites
 
 Node.js (v18 or later recommended)
+
 npm
+
 A MongoDB Atlas account and connection string
 
 Installation & Setup
@@ -84,51 +86,71 @@ Installation & Setup
 Clone the repository:
 
 git clone https://github.com/ihthisham6/Stock_Trading_Application.git
+
 cd Stock_Trading_Application
 
 Backend Setup:
 
 Navigate to the backend folder: cd backend
+
 Install dependencies: npm install
+
 Create a .env file and add the following variables:
-code
-Env
+
 MONGO_URL=YOUR_MONGODB_CONNECTION_STRING
+
 TOKEN_KEY=YOUR_JWT_SECRET_KEY
+
 ALPHA_VANTAGE_API_KEY=YOUR_ALPHA_VANTAGE_KEY
+
 DASHBOARD_URL=http://localhost:3000
+
 FRONTEND_URL=http://localhost:5173
 
 Dashboard Setup:
 
-Navigate to the dashboard folder: cd ../dashboard
+Navigate to the dashboard folder: 
+
+cd ../dashboard
+
 Install dependencies: npm install
+
 Create a .env file and add the following:
-code
-Env
+
 VITE_API_URL=http://localhost:3002
+
 Frontend Setup:
-Navigate to the frontend folder: cd ../frontend
+
+Navigate to the frontend folder: 
+
+cd ../frontend
+
 Install dependencies: npm install
+
 Create a .env file and add the following:
-code
-Env
+
 VITE_DASHBOARD_URL=http://localhost:3000
+
 Running the Application
+
 You will need to open three separate terminals to run all services concurrently.
+
 Run the Backend:
 
 cd backend
+
 npm start
 
 Run the Dashboard App:
 
 cd dashboard
+
 npm run dev
 
 Run the Frontend Landing Page:
 
 cd frontend
+
 npm run dev
 
 You can now access the landing page at http://localhost:5173 and the main dashboard/login at http://localhost:3000.
