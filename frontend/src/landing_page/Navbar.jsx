@@ -110,14 +110,24 @@ function Navbar() {
               </a>
             </li> */}
             {/* --- END OF NEW BUTTON --- */}
- <li className="nav-item">
+ {/* <li className="nav-item">
       <a 
         className="nav-link active text-secondary" // Use a secondary, muted color
         href={`${import.meta.env.VITE_DASHBOARD_URL}`}
       >
         Demo Login
       </a>
-    </li>
+    </li> */}
+
+     {/* --- THIS IS THE FINAL DEMO LOGIN BUTTON --- */}
+            <li className="nav-item">
+              <a 
+                className="nav-link active fw-bold text-info" // Using bold and a bright, light blue
+                href={`${import.meta.env.VITE_DASHBOARD_URL}`}
+              >
+                Demo Login
+              </a>
+            </li>
 
             <li className="nav-item">
               {/* This is now a standard <a> tag pointing to the dashboard app */}
