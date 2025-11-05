@@ -4,9 +4,20 @@ const User = require("../models/UserModel.js");
 const { createSecretToken } = require("../util/SecretToken.js");
 const bcrypt = require("bcryptjs");
 
+// A helper function to validate the password
+const validatePassword = (password) => {
+  const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  return regex.test(password);
+};
+
 module.exports.Signup = async (req, res, next) => {
   try {
     const { email, password, username, createdAt } = req.body;
+
+    // --- NEW: Backend validation check ---
+    if (!password || !validatePassword(password)) {
+      return res.status(400).json({ message: "Password does not meet the requirements." });
+    }
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.json({ message: "User already exists" });

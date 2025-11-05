@@ -1,7 +1,110 @@
+// // dashboard/src/pages/Signup.jsx
+
+// import React, { useState } from "react";
+// import { Link } from "react-router-dom"; // We no longer need Navigate
+// import axios from "axios";
+// import { ToastContainer, toast } from "react-toastify";
+
+// const Signup = () => {
+//   const [inputValue, setInputValue] = useState({
+//     email: "",
+//     password: "",
+//     username: "",
+//   });
+//   const { email, password, username } = inputValue;
+
+//   // We no longer need the signupSuccess state
+//   // const [signupSuccess, setSignupSuccess] = useState(false);
+
+//   const handleError = (err) =>
+//     toast.error(err, {
+//       position: "bottom-left",
+//     });
+//   const handleSuccess = (msg) =>
+//     toast.success(msg, {
+//       position: "bottom-left",
+//     });
+
+//   const handleOnChange = (e) => {
+//     const { name, value } = e.target;
+//     setInputValue({
+//       ...inputValue,
+//       [name]: value,
+//     });
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     try {
+//       const { data } = await axios.post(
+//         `${import.meta.env.VITE_API_URL}/signup`,
+//         { ...inputValue },
+//         { withCredentials: true }
+//       );
+//       const { success, message } = data;
+//       if (success) {
+//         handleSuccess(message);
+
+//         // --- THIS IS THE DEFINITIVE FIX ---
+//         // Use a timeout and a full page reload for reliability.
+//         setTimeout(() => {
+//           window.location.href = "/";
+//         }, 1000);
+
+//       } else {
+//         handleError(message);
+//       }
+//     } catch (error) {
+//       console.log(error);
+//       handleError("An error occurred during signup.");
+//     }
+//   };
+
+//   // We no longer need the conditional redirect logic.
+//   // if (signupSuccess) { ... }
+
+//   return (
+//     <div className="auth-page-container">
+//       <div className="auth-card">
+//         <div className="auth-image-section"></div>
+//         <div className="auth-form-section">
+//           <img src="/logo.png" alt="Logo" className="auth-logo" />
+//           <h2>Create Your Account</h2>
+//           <p className="auth-subtitle">Start your trading journey with us.</p>
+          
+//           <form onSubmit={handleSubmit}>
+//             <div className="input-group">
+//               <label htmlFor="email">Email</label>
+//               <input type="email" name="email" id="email" value={email} placeholder="Enter your email" onChange={handleOnChange}/>
+//             </div>
+//             <div className="input-group">
+//               <label htmlFor="username">Username</label>
+//               <input type="text" name="username" id="username" value={username} placeholder="Choose a username" onChange={handleOnChange}/>
+//             </div>
+//             <div className="input-group">
+//               <label htmlFor="password">Password</label>
+//               <input type="password" name="password" id="password" value={password} placeholder="Create a strong password" onChange={handleOnChange} />
+//             </div>
+//             <button type="submit">Sign Up</button>
+//           </form>
+
+//           <span className="auth-footer-link">
+//             Already have an account? <Link to={"/login"}>Log in</Link>
+//           </span>
+//         </div>
+//       </div>
+//       <ToastContainer />
+//     </div>
+//   );
+// };
+
+// export default Signup;
+
+
 // dashboard/src/pages/Signup.jsx
 
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // We no longer need Navigate
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -13,8 +116,8 @@ const Signup = () => {
   });
   const { email, password, username } = inputValue;
 
-  // We no longer need the signupSuccess state
-  // const [signupSuccess, setSignupSuccess] = useState(false);
+  // --- NEW: State for password validation error ---
+  const [passwordError, setPasswordError] = useState("");
 
   const handleError = (err) =>
     toast.error(err, {
@@ -25,16 +128,41 @@ const Signup = () => {
       position: "bottom-left",
     });
 
+  // --- NEW: A helper function to validate the password format ---
+  const validatePassword = (password) => {
+    // Regex: At least 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    return regex.test(password);
+  };
+
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setInputValue({
       ...inputValue,
       [name]: value,
     });
+
+    // --- NEW: Instant validation feedback for the password field ---
+    if (name === "password") {
+      if (value && !validatePassword(value)) { // Check only if there is a value
+        setPasswordError(
+          "Password must be at least 8 characters, with uppercase, lowercase, number, and special character."
+        );
+      } else {
+        setPasswordError(""); // Clear error if valid or empty
+      }
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // --- NEW: Final validation check before submitting to the backend ---
+    if (!validatePassword(password)) {
+      handleError("Please ensure your password meets all the requirements.");
+      return; // Stop the submission
+    }
+    
     try {
       const { data } = await axios.post(
         `${import.meta.env.VITE_API_URL}/signup`,
@@ -44,24 +172,20 @@ const Signup = () => {
       const { success, message } = data;
       if (success) {
         handleSuccess(message);
-
-        // --- THIS IS THE DEFINITIVE FIX ---
-        // Use a timeout and a full page reload for reliability.
         setTimeout(() => {
           window.location.href = "/";
         }, 1000);
-
       } else {
+        // Use the specific error message from the backend (e.g., "User already exists")
         handleError(message);
       }
     } catch (error) {
       console.log(error);
-      handleError("An error occurred during signup.");
+      // Use the specific error from the backend if it exists (e.g., from validation)
+      const errorMessage = error.response?.data?.message || "An error occurred during signup.";
+      handleError(errorMessage);
     }
   };
-
-  // We no longer need the conditional redirect logic.
-  // if (signupSuccess) { ... }
 
   return (
     <div className="auth-page-container">
@@ -83,7 +207,17 @@ const Signup = () => {
             </div>
             <div className="input-group">
               <label htmlFor="password">Password</label>
-              <input type="password" name="password" id="password" value={password} placeholder="Create a strong password" onChange={handleOnChange}/>
+              <input 
+                type="password" 
+                name="password" 
+                id="password" 
+                value={password} 
+                placeholder="Create a strong password" 
+                onChange={handleOnChange}
+                autoComplete="new-password" // Add autocomplete attribute
+              />
+              {/* --- NEW: Display the password error message dynamically --- */}
+              {passwordError && <small style={{ color: 'red', marginTop: '5px' }}>{passwordError}</small>}
             </div>
             <button type="submit">Sign Up</button>
           </form>
