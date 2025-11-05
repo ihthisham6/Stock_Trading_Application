@@ -50,13 +50,13 @@ Three-Part Monorepo Architecture: The project is professionally structured into 
 
 Tech Stack
 
-Category   	Technologies
+Category   &nbsp;&nbsp; 	Technologies
 
-Frontend   	React, Vite, React Router, Axios, Bootstrap, Chart.js.
+Frontend   &nbsp;&nbsp;  	React, Vite, React Router, Axios, Bootstrap, Chart.js.
 
-Backend	    Node.js, Express.js, Mongoose, JWT, bcryptjs, cookie-parser, CORS, dotenv
+Backend	    &nbsp;&nbsp;  Node.js, Express.js, Mongoose, JWT, bcryptjs, cookie-parser, CORS, dotenv
 
-Database	   MongoDB Atlas (Cloud-hosted NoSQL database)
+Database	   &nbsp;&nbsp;  MongoDB Atlas (Cloud-hosted NoSQL database)
 
 Architecture
 
