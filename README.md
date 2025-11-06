@@ -199,8 +199,6 @@ A managed MongoDB Atlas cluster ensures high availability and scalability for th
 
 🔮 Future Improvements
 
-ML-Powered Portfolio Analysis: Add a new "Analysis" tab that calls a Python microservice to provide users with insights into their portfolio's sector diversification and risk profile (Beta calculation).
-
 Full Mobile Responsiveness: Add CSS media queries and leverage Bootstrap's responsive utilities to ensure the application is fully usable and looks professional on tablet and mobile devices.
 
 👨‍💻 Author
