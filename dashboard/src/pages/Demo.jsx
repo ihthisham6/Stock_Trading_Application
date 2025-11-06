@@ -1,9 +1,12 @@
 // dashboard/src/pages/Demo.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Navigate } from 'react-router-dom'; // Import the Navigate component
 
 const Demo = () => {
     const [status, setStatus] = useState("Logging in as demo user, please wait...");
+    // --- NEW: State to trigger the navigation ---
+    const [isVerified, setIsVerified] = useState(false);
 
     useEffect(() => {
         const attemptDemoLogin = async () => {
@@ -23,11 +26,10 @@ const Demo = () => {
                     { withCredentials: true }
                 );
 
-                // Step 3: If verification succeeds, redirect
+                // --- THIS IS THE CHANGE ---
+                // Step 3: If verification succeeds, set the state to trigger navigation
                 setStatus("Session verified! Redirecting to dashboard...");
-                setTimeout(() => {
-                    window.location.href = "/";
-                }, 1000);
+                setIsVerified(true);
 
             } catch (error) {
                 const errorMsg = error.response?.data?.message || "Demo login failed. Please try again.";
@@ -37,8 +39,16 @@ const Demo = () => {
         };
         
         attemptDemoLogin();
-    }, []);
+    }, []); // Empty array ensures this runs only once
 
+    // --- THIS IS THE NEW LOGIC ---
+    // If the session has been successfully verified, render the Navigate component.
+    // This tells React Router to handle the redirect internally.
+    if (isVerified) {
+        return <Navigate to="/" replace />;
+    }
+
+    // While the process is running, show the status message.
     return (
         <div style={{ padding: '50px', textAlign: 'center', fontFamily: 'sans-serif' }}>
             <h1>Demo Login</h1>
