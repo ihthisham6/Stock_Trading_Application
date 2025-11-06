@@ -52,35 +52,32 @@ app.get('/verify', userVerification, (req, res) => {
 
 
 // ==========================================================
-// =========== FINAL DEMO LOGIN REDIRECT ENDPOINT ===========
+// ============ FINAL DEMO LOGIN ENDPOINT (NO REDIRECT) ===========
 // ==========================================================
-app.get('/demo-redirect', async (req, res) => {
+app.post('/demo-login', async (req, res) => {
     try {
-        // --- HARDCODE YOUR DEMO USER'S EMAIL HERE ---
-        const demoUserEmail = 'your-test-user-email@example.com'; 
+        const demoUserEmail = 'test2@gmail.com'; // Your demo user's email
 
         const user = await UserModel.findOne({ email: demoUserEmail });
-
         if (!user) {
-            return res.status(404).send("Demo user account not found on the server. Please check the email in the backend code.");
+            return res.status(404).json({ message: "Demo user account not found." });
         }
 
-        // Generate a token for this user
         const token = createSecretToken(user._id);
         
-        // 1. Set the cookie with production-safe settings
+        // Set the cookie with production-safe settings
         res.cookie("token", token, {
             httpOnly: false,
             secure: true,
             sameSite: "none"
         });
 
-        // 2. Immediately redirect the browser to your live dashboard URL
-        res.redirect(process.env.DASHBOARD_URL);
+        // Send a success message back to the client
+        res.status(200).json({ message: "Demo user logged in successfully", success: true });
 
     } catch (error) {
-        console.error("Demo redirect failed:", error);
-        res.status(500).send("Server error during demo login.");
+        console.error("Demo login failed:", error);
+        res.status(500).json({ message: "Server error during demo login." });
     }
 });
 

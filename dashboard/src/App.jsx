@@ -10,6 +10,8 @@ import Login from './pages/Login';     // The login page you will create
 import Signup from './pages/Signup';   // The signup page you will create
 import ProtectedRoute from './components/ProtectedRoute'; // The gatekeeper component
 import { GeneralContextProvider } from './components/GeneralContext';
+import Demo from './pages/Demo';
+
 function App() {
   return (
     <CookiesProvider> {/* Wrap everything in the provider */}
@@ -19,7 +21,7 @@ function App() {
         {/* These routes are visible to everyone, logged in or not */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-
+ <Route path="/demo" element={<Demo />} />
         {/* === PROTECTED ROUTES === */}
         {/* These routes are only accessible if the user is logged in. */}
         {/* The ProtectedRoute component acts as the guard. */}
