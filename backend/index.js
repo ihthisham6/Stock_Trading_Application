@@ -10,6 +10,7 @@ const { userVerification } = require('./middleware/AuthMiddleware');
 
 // --- Import Routes ---
 const authRoute = require("./routes/AuthRoute.js");
+const { createSecretToken } = require('./util/SecretToken'); 
 
 // --- Import Models (This is fine) ---
 //const { HoldingsModel } = require("./models/HoldingsModel.js");
@@ -48,6 +49,42 @@ app.get('/verify', userVerification, (req, res) => {
     // We can simply send back a success status.
     res.status(200).json({ status: true, message: "User is authenticated" });
 });
+
+
+// ==========================================================
+// =========== FINAL DEMO LOGIN REDIRECT ENDPOINT ===========
+// ==========================================================
+app.get('/demo-redirect', async (req, res) => {
+    try {
+        // --- HARDCODE YOUR DEMO USER'S EMAIL HERE ---
+        const demoUserEmail = 'your-test-user-email@example.com'; 
+
+        const user = await UserModel.findOne({ email: demoUserEmail });
+
+        if (!user) {
+            return res.status(404).send("Demo user account not found on the server. Please check the email in the backend code.");
+        }
+
+        // Generate a token for this user
+        const token = createSecretToken(user._id);
+        
+        // 1. Set the cookie with production-safe settings
+        res.cookie("token", token, {
+            httpOnly: false,
+            secure: true,
+            sameSite: "none"
+        });
+
+        // 2. Immediately redirect the browser to your live dashboard URL
+        res.redirect(process.env.DASHBOARD_URL);
+
+    } catch (error) {
+        console.error("Demo redirect failed:", error);
+        res.status(500).send("Server error during demo login.");
+    }
+});
+
+// ... (the rest of your routes like /allHoldings, etc.)
 
 // Your existing API routes for data
 app.get('/allHoldings',userVerification, async (req, res) => {
